@@ -1,6 +1,5 @@
 name: 'Banco Web - CI'
 
-# gatilhos / triggers
 on:
   workflow_dispatch:
 
@@ -26,10 +25,11 @@ jobs:
         run: npm run server &
 
       - name: Executar os testes
-        run: npx cypress run --reporter mochawesome
+        run: npx cypress run --reporter mochawesome --reporter-options "reportDir=cypress/reports"
 
       - name: Salvar o relatório dos testes
         uses: actions/upload-artifact@v4
+        if: always() # Salva o artefato mesmo se os testes falharem
         with:
           name: relatorio-cypress
           path: cypress/reports/mochawesome.json
